@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import httpStatus from "http-status";
 import { Secret } from "jsonwebtoken";
-import config from "../../../config/config";
+import config from "../../../config/Config";
 import ApiError from "../../../errors/ApiError";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
 import { User } from "../user/user.model";

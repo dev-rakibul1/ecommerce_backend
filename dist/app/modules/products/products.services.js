@@ -15,10 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductServices = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
+const user_model_1 = require("../user/user.model");
 const products_model_1 = require("./products.model");
 // Create products
 const CreateProductServices = (payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const userId = payload.user;
+    const isExistUser = yield user_model_1.User.findById(userId);
+    if (!isExistUser) {
+        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "User not found or not valid.");
+    }
     const result = yield products_model_1.Products.create(payload);
+    yield user_model_1.User.findByIdAndUpdate(userId, {
+        $push: { products: result._id },
+    });
     return result;
 });
 // Get all products
