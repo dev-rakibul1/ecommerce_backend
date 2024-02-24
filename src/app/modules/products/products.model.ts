@@ -57,6 +57,7 @@ const productSchema = new Schema<IProducts, ProductModels>(
       {
         type: Schema.Types.ObjectId,
         ref: "User",
+        required: true,
       },
     ],
     water_resistance: {

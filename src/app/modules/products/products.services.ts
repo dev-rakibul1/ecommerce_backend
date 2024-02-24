@@ -1,5 +1,6 @@
 import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
+import { User } from "../user/user.model";
 import { IProducts } from "./products.interface";
 import { Products } from "./products.model";
 
@@ -7,7 +8,19 @@ import { Products } from "./products.model";
 const CreateProductServices = async (
   payload: IProducts
 ): Promise<IProducts> => {
+  const userId = payload.user;
+
+  const isExistUser = await User.findById(userId);
+  if (!isExistUser) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "User not found or not valid.");
+  }
+
   const result = await Products.create(payload);
+
+  await User.findByIdAndUpdate(userId, {
+    $push: { products: result._id },
+  });
+
   return result;
 };
 
