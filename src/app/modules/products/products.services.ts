@@ -26,7 +26,7 @@ const CreateProductServices = async (
 
 // Get all products
 const GetAllProductServices = async (): Promise<IProducts[] | null> => {
-  const result = await Products.find({});
+  const result = await Products.find().sort({ createdAt: -1 });
   return result;
 };
 
